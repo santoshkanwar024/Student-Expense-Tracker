@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<fstream>
+#include<sstream>
 #include<iomanip>
 #include<map>
 using namespace std;
@@ -23,7 +24,7 @@ public:
    void addExpense();
    void viewExpenses();
    void deleteExpense();
-   void catagoryReport();
+   void categoryReport();
    void totalExpense();
    void saveToFile();
    void loadFromFile();
@@ -33,11 +34,11 @@ void ExpenseManager::saveToFile(){
    ofstream file ("expense.txt");
 
    for (auto e : expenses){
-      file<< e.id<<endl;
-      file<< e.date<<endl;
-      file<< e.category<<endl;
-      file<< e.description<<endl;
-      file<< e.amount<<endl;
+    file<< e.id<<","
+        << e.date<<","
+        << e.category<<","
+        << e.description<<","
+        << e.amount<<endl;
    }
 
    file.close();
@@ -74,16 +75,27 @@ void ExpenseManager::addExpense(){
 void ExpenseManager::loadFromFile(){
    ifstream file("expense.txt");
 
-   Expense e;
+   string line;
 
-   while(file>>e.id){
+   while(getline(file,line)){
+    stringstream ss(line);
 
-      file>>e.date;
-      file>>e.category;
-      file>>e.description;
-      file>>e.amount;
+    Expense e;
+    string temp;
 
-      expenses.push_back(e);
+    getline (ss, temp ,',');
+    e.id = stoi (temp);
+
+    getline (ss, e.date, ',');
+
+    getline(ss, e.category, ',');
+
+    getline(ss, e.description, ',');
+
+    getline(ss, temp ,',');
+    e.amount = stod (temp );
+
+    expenses.push_back(e);
    }
 
    file.close();
@@ -122,15 +134,15 @@ void ExpenseManager::viewExpenses(){
 }
 
 void ExpenseManager::deleteExpense(){
-   int deleteld;
+   int deleteId;
 
    cout<<"Enter Expense ID to delete: ";
-   cin>>deleteld;
+   cin>>deleteId;
 
    bool found = false;
 
    for (int i = 0 ; i< expenses.size(); i++){
-      if (expenses[i].id == deleteld){
+      if (expenses[i].id == deleteId){
          expenses.erase(expenses.begin() + i);
 
          found = true;
@@ -156,7 +168,7 @@ void ExpenseManager::totalExpense(){
    cout<<"\n Total Expense = Rs."<<total<<endl;
 }
 
-void ExpenseManager::catagoryReport(){
+void ExpenseManager::categoryReport(){
    if(expenses.empty()){
       cout<<"No Expenses Found!"<<endl;
       return;
@@ -219,7 +231,7 @@ int main(){
            break;
          
          case 5 :
-           manager.catagoryReport();
+           manager.categoryReport();
            break;
 
          case 6 :
