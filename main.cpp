@@ -23,6 +23,7 @@ private:
 public:
    void addExpense();
    void viewExpenses();
+   void editExpense();
    void deleteExpense();
    void categoryReport();
    void totalExpense();
@@ -133,6 +134,54 @@ void ExpenseManager::viewExpenses(){
    }
 }
 
+void ExpenseManager::editExpense()
+{
+    int editId;
+
+    cout<<"Enter Expense ID to edit: ";
+    cin>>editId;
+
+    bool found = false;
+
+    for(auto &e : expenses)
+    {
+        if(e.id == editId)
+        {
+            found = true;
+
+            cout<<"\nCurrent Details\n";
+            cout<<"Date: "<<e.date<<endl;
+            cout<<"Category: "<<e.category<<endl;
+            cout<<"Description: "<<e.description<<endl;
+            cout<<"Amount: "<<e.amount<<endl;
+
+            cout<<"\nEnter New Date: ";
+            cin>>e.date;
+
+            cout<<"Enter New Category: ";
+            cin>>e.category;
+
+            cout<<"Enter New Description: ";
+            cin>>e.description;
+
+            cout<<"Enter New Amount: ";
+            cin>>e.amount;
+
+            saveToFile();
+
+            cout<<"\nExpense updated successfully!"<<endl;
+
+            break;
+        }
+    }
+
+    if(!found)
+    {
+        cout<<"Expense ID not found!"<<endl;
+    }
+}
+
+
 void ExpenseManager::deleteExpense(){
    int deleteId;
 
@@ -204,10 +253,11 @@ int main(){
       cout<<"\n ===== Student Expense Tracker ===== \n";
       cout<<"1. Ad Expense\n";
       cout<<"2. View Expense\n";
-      cout<<"3. Delete Expense\n";
-      cout<<"4. Total Expenses\n";
-      cout<<"5. Catagory Report\n";
-      cout<<"6. Exit\n";
+      cout<<"3. Edit Expense\n";
+      cout<<"4. Delete Expense\n";
+      cout<<"5. Total Expenses\n";
+      cout<<"6. Catagory Report\n";
+      cout<<"7. Exit\n";
 
       cout<<"Enter Choise: ";
       cin>>choise;
@@ -222,19 +272,23 @@ int main(){
            manager.viewExpenses();
            break;
 
-         case 3 :
+         case 3:
+           manager.editExpense();
+           break;
+
+         case 4:
            manager.deleteExpense();
            break;
       
-         case 4 :
+         case 5 :
            manager.totalExpense();
            break;
          
-         case 5 :
+         case 6 :
            manager.categoryReport();
            break;
 
-         case 6 :
+         case 7 :
            cout<<"Existing Program..."<<endl;
            return 0;
 
