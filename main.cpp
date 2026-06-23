@@ -30,6 +30,7 @@ public:
    void saveToFile();
    void loadFromFile();
    int getNextId();
+   void searchByCategory();
 };
 
 int ExpenseManager::getNextId()
@@ -49,7 +50,7 @@ int ExpenseManager::getNextId()
 
 
 void ExpenseManager::saveToFile(){
-   ofstream file ("expense.txt");
+   ofstream file ("expense.csv");
 
    for (auto e : expenses){
     file<< e.id<<","
@@ -68,8 +69,8 @@ void ExpenseManager::saveToFile(){
 void ExpenseManager::addExpense(){
    Expense e;
 
-   cout<<"Enter ID: ";
-   cin>>e.id;
+   e.id = getNextId();
+   cout<<"Generated Expense ID: "<<e.id<<endl;
 
    cout<<"Enter Date: ";
    cin>>e.date;
@@ -91,7 +92,7 @@ void ExpenseManager::addExpense(){
 }
 
 void ExpenseManager::loadFromFile(){
-   ifstream file("expense.txt");
+   ifstream file("expense.csv");
 
    string line;
 
@@ -257,6 +258,54 @@ void ExpenseManager::categoryReport(){
    }
 }
 
+void ExpenseManager::searchByCategory()
+{
+    if(expenses.empty())
+    {
+        cout << "No expenses found!" << endl;
+        return;
+    }
+
+    string searchCategory;
+    bool found = false;
+
+    cout << "Enter Category: ";
+    cin >> searchCategory;
+
+    cout << "\n";
+
+    cout << left
+         << setw(5) << "ID"
+         << setw(15) << "Date"
+         << setw(15) << "Category"
+         << setw(20) << "Description"
+         << setw(10) << "Amount"
+         << endl;
+
+    cout << "---------------------------------------------------------------" << endl;
+
+    for(auto e : expenses)
+    {
+        if(e.category == searchCategory)
+        {
+            cout << left
+                 << setw(5) << e.id
+                 << setw(15) << e.date
+                 << setw(15) << e.category
+                 << setw(20) << e.description
+                 << setw(10) << e.amount
+                 << endl;
+
+            found = true;
+        }
+    }
+
+    if(!found)
+    {
+        cout << "No expense found in this category." << endl;
+    }
+}
+
 
 int main(){
    ExpenseManager manager;
@@ -274,7 +323,8 @@ int main(){
       cout<<"4. Delete Expense\n";
       cout<<"5. Total Expenses\n";
       cout<<"6. Catagory Report\n";
-      cout<<"7. Exit\n";
+      cout<<"7. Search by Category\n";
+      cout<<"8. Exit\n";
 
       cout<<"Enter Choise: ";
       cin>>choise;
@@ -304,8 +354,11 @@ int main(){
          case 6 :
            manager.categoryReport();
            break;
-
          case 7 :
+           manager.searchByCategory();
+           break;
+
+         case 8 :
            cout<<"Existing Program..."<<endl;
            return 0;
 
