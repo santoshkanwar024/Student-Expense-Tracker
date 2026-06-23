@@ -22,22 +22,22 @@ private:
 
 public:
    void addExpense();
+   void saveToFile();
+   void loadFromFile();
    void viewExpenses();
    void editExpense();
    void deleteExpense();
-   void categoryReport();
    void totalExpense();
-   void saveToFile();
-   void loadFromFile();
-   int getNextId();
+   void categoryReport();
    void searchByCategory();
+   int getNextId();
 };
 
 int ExpenseManager::getNextId()
 {
     int maxId = 0;
 
-    for(auto e : expenses)
+    for(const auto &e : expenses)
     {
         if(e.id > maxId)
         {
@@ -50,9 +50,13 @@ int ExpenseManager::getNextId()
 
 
 void ExpenseManager::saveToFile(){
-   ofstream file ("expense.csv");
+   ofstream file("expense.csv");
 
-   for (auto e : expenses){
+   if(!file){
+    return;
+   }
+
+   for (const auto &e : expenses){
     file<< e.id<<","
         << e.date<<","
         << e.category<<","
@@ -70,18 +74,20 @@ void ExpenseManager::addExpense(){
    Expense e;
 
    e.id = getNextId();
-   cout<<"Generated Expense ID: "<<e.id<<endl;
+   cout<<"Expense ID generated successfully: "<<e.id<<endl;
 
    cout<<"Enter Date: ";
    cin>>e.date;
 
-  cout<<"Enter Category: ";
+   cout<<"Enter Category: ";
    cin>>e.category;
 
-  cout<<"Enter Description: ";
-   cin>>e.description;
+   cin.ignore();
 
-  cout<<"Enter Amount: ";
+   cout<<"Enter Description: ";
+   getline(cin, e.description);
+
+   cout<<"Enter Amount: ";
    cin>>e.amount;
 
    expenses.push_back(e);
@@ -93,6 +99,10 @@ void ExpenseManager::addExpense(){
 
 void ExpenseManager::loadFromFile(){
    ifstream file("expense.csv");
+
+   if(!file){
+    return;
+   }
 
    string line;
 
@@ -141,7 +151,7 @@ void ExpenseManager::viewExpenses(){
 
    cout<<"---------------------------------------------------------------"<<endl;
 
-   for(auto e : expenses){
+   for(const auto &e : expenses){
       cout<<left
          << setw(5) <<e.id
          << setw(15) <<e.date
@@ -179,8 +189,10 @@ void ExpenseManager::editExpense()
             cout<<"Enter New Category: ";
             cin>>e.category;
 
+            cin.ignore();
+
             cout<<"Enter New Description: ";
-            cin>>e.description;
+            getline(cin, e.description);
 
             cout<<"Enter New Amount: ";
             cin>>e.amount;
@@ -228,7 +240,7 @@ void ExpenseManager::deleteExpense(){
 void ExpenseManager::totalExpense(){
    double total = 0;
 
-   for (auto e : expenses){
+   for (const auto &e : expenses){
       total += e.amount ;
    }
 
@@ -243,18 +255,17 @@ void ExpenseManager::categoryReport(){
 
    map<string,double>report;
 
-   for(auto e : expenses){
+   for(const auto &e : expenses){
       report[e.category] += e.amount;
    }
 
    cout<<"\n ===== Category Wise Report ===== \n\n";
 
-   for (auto item : report){
-      cout<<left
-          <<setw(15) << item.first
-          <<" :Rs."
-          <<item.second
-          <<endl;
+   for (const auto &item : report){
+      cout << left
+          << setw(20) << item.first
+          << "Rs. "
+          << item.second << endl;
    }
 }
 
@@ -284,7 +295,7 @@ void ExpenseManager::searchByCategory()
 
     cout << "---------------------------------------------------------------" << endl;
 
-    for(auto e : expenses)
+    for(const auto &e : expenses)
     {
         if(e.category == searchCategory)
         {
@@ -312,24 +323,24 @@ int main(){
 
    manager.loadFromFile();
 
-   int choise;
+   int choice;
 
    while(true){
 
       cout<<"\n ===== Student Expense Tracker ===== \n";
-      cout<<"1. Ad Expense\n";
+      cout<<"1. Add Expense\n";
       cout<<"2. View Expense\n";
       cout<<"3. Edit Expense\n";
       cout<<"4. Delete Expense\n";
       cout<<"5. Total Expenses\n";
-      cout<<"6. Catagory Report\n";
+      cout<<"6. Category Report\n";
       cout<<"7. Search by Category\n";
       cout<<"8. Exit\n";
 
-      cout<<"Enter Choise: ";
-      cin>>choise;
+      cout<<"Enter Choice: ";
+      cin>>choice;
 
-      switch(choise){
+      switch(choice){
          case 1:
            manager.addExpense();
            break;
@@ -359,7 +370,7 @@ int main(){
            break;
 
          case 8 :
-           cout<<"Existing Program..."<<endl;
+           cout<<"Exiting Program..."<<endl;
            return 0;
 
          default:
