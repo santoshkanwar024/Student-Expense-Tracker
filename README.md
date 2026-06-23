@@ -6,18 +6,18 @@ Student Expense Tracker is a console-based application developed in C++ to help 
 ## Features
 - Add Expense
 - View Expenses
+- Edit Expense
 - Delete Expense
 - Total Expense Calculation
-- Category Wise Report
-- File Based Data Storage
-- Load Data From File
+- Category-wise Expense Report
+- CSV File Storage
+- Console-based Menu Driven Application
 
 ## Technologies Used
 - C++
-- Object Oriented Programming (OOP)
-- STL Vector
-- STL Map
+- Object-Oriented Programming (OOP)
 - File Handling
+- STL (Vector, Map, Stringstream)
 
 ## How to Run
 Compile:

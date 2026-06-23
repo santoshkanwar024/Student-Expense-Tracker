@@ -6,13 +6,15 @@ Many students spend money daily but do not keep track of their expenses. As a re
 ## Objective
 The objective of this project is to develop a simple console-based application that helps students record, manage, and analyze their expenses.
 
-## Features
+## Features Implemented
 1. Add Expense
 2. View Expenses
-3. Delete Expense
-4. Calculate Total Expenses
-5. Category Wise Expense Report
-6. File Based Data Storage
+3. Edit Expense
+4. Delete Expense
+5. Calculate Total Expenses
+6. Category-wise Expense Report
+7. Store data in CSV format
+8. Load data automatically when the program starts
 
 ## Technologies Used
 - C++
