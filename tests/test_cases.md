@@ -1,4 +1,4 @@
-# Student Expense Tracker Test Cases
+# Test cases 
 
 ## Test Case 1
 Feature: Add Expense

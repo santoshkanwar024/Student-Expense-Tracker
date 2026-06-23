@@ -29,7 +29,24 @@ public:
    void totalExpense();
    void saveToFile();
    void loadFromFile();
+   int getNextId();
 };
+
+int ExpenseManager::getNextId()
+{
+    int maxId = 0;
+
+    for(auto e : expenses)
+    {
+        if(e.id > maxId)
+        {
+            maxId = e.id;
+        }
+    }
+
+    return maxId + 1;
+}
+
 
 void ExpenseManager::saveToFile(){
    ofstream file ("expense.txt");
